@@ -1,0 +1,224 @@
+<html><head><base href="https://farfouze.github.io/home" /><title>FARFOUZE - Home</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap');
+
+  body, html {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    overflow: hidden;
+    font-family: 'Orbitron', sans-serif;
+    background-color: #000;
+    color: #fff;
+    cursor: none;
+    user-select: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+  }
+
+  #stars {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+  }
+
+  .star {
+    position: absolute;
+    background-color: #fff;
+    border-radius: 50%;
+    animation: twinkle 5s infinite;
+  }
+
+  @keyframes twinkle {
+    0%, 100% { opacity: 0.5; }
+    50% { opacity: 1; }
+  }
+
+  #cursor {
+    width: 20px;
+    height: 20px;
+    border: 2px solid #00ffff;
+    border-radius: 50%;
+    position: fixed;
+    pointer-events: none;
+    z-index: 9999;
+    mix-blend-mode: difference;
+    transition: all 0.1s ease;
+    opacity: 0;
+  }
+
+  #cursor::after {
+    content: '';
+    width: 20px;
+    height: 20px;
+    position: absolute;
+    border: 8px solid #00ffff;
+    border-radius: 50%;
+    opacity: 0.5;
+    top: -8px;
+    left: -8px;
+    animation: pulse 2s infinite;
+  }
+
+  @keyframes pulse {
+    0% { transform: scale(1); opacity: 0.5; }
+    50% { transform: scale(1.5); opacity: 0; }
+    100% { transform: scale(1); opacity: 0.5; }
+  }
+
+  #content {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    z-index: 1;
+    position: relative;
+    text-align: center;
+  }
+
+  h1 {
+    font-size: 5rem;
+    margin-bottom: 2rem;
+    text-shadow: 0 0 10px #00ffff, 0 0 20px #00ffff, 0 0 30px #00ffff;
+    animation: glow 2s infinite alternate;
+    text-transform: uppercase;
+  }
+
+  @keyframes glow {
+    from { text-shadow: 0 0 10px #00ffff, 0 0 20px #00ffff, 0 0 30px #00ffff; }
+    to { text-shadow: 0 0 20px #00ffff, 0 0 30px #00ffff, 0 0 40px #00ffff; }
+  }
+
+  .cta {
+    padding: 1rem 2rem;
+    font-size: 1.2rem;
+    background-color: transparent;
+    color: #00ffff;
+    border: 2px solid #00ffff;
+    border-radius: 50vh;
+    cursor: none;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+    text-decoration: none;
+    margin-top: 1rem;
+  }
+
+  .cta:hover {
+    background-color: #00ffff;
+    color: #000;
+  }
+
+  .cta::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(
+      120deg,
+      transparent,
+      rgba(0, 255, 255, 0.4),
+      transparent
+    );
+    transition: all 0.5s;
+  }
+
+  .cta:hover::before {
+    left: 100%;
+  }
+
+  @media only screen and (orientation: portrait) {
+  h1 {
+    font-size: 6rem;
+    margin-bottom: 1rem;
+  }
+
+  .cta {
+    padding: 1.2rem 2rem;
+    font-size: 2rem;
+  }
+
+  #cursor {
+    display: none;
+  }
+
+  body, html {
+    overflow: auto;
+    cursor: auto;
+    user-select: auto;
+    -webkit-user-select: auto;
+    -moz-user-select: auto;
+    -ms-user-select: auto;
+  }
+}
+
+</style>
+</head>
+<body>
+  <div id="stars"></div>
+  <div id="cursor"></div>
+  <div id="content">
+    <h1>FARFOUZE</h1>
+    <a href="http://127.0.0.1:5500/farfouze-v3.1-contact.html" class="cta">Contact Me</a>
+    <br>
+    <a href="http://127.0.0.1:5500/farfouze-v3.1-game.html" class="cta">Play</a>
+  </div>
+
+  <script>
+    const starsContainer = document.getElementById('stars');
+    for (let i = 0; i < 200; i++) {
+      const star = document.createElement('div');
+      star.className = 'star';
+      star.style.width = `${Math.random() * 3}px`;
+      star.style.height = star.style.width;
+      star.style.left = `${Math.random() * 100}%`;
+      star.style.top = `${Math.random() * 100}%`;
+      star.style.animationDelay = `${Math.random() * 5}s`;
+      starsContainer.appendChild(star);
+    }
+
+    const cursor = document.getElementById('cursor');
+    
+    document.addEventListener('mousemove', (e) => {
+      cursor.style.left = e.clientX + 'px';
+      cursor.style.top = e.clientY + 'px';
+    });
+
+    document.addEventListener('mouseenter', () => {
+      cursor.style.opacity = '1';
+    });
+
+    document.addEventListener('mouseleave', () => {
+      cursor.style.opacity = '0';
+    });
+
+    const interactiveElements = document.querySelectorAll('a, .cta');
+    interactiveElements.forEach(el => {
+      el.addEventListener('mouseenter', () => {
+        cursor.style.transform = 'scale(1.5)';
+      });
+      el.addEventListener('mouseleave', () => {
+        cursor.style.transform = 'scale(1)';
+      });
+    });
+
+    document.addEventListener('mousemove', (e) => {
+      const mouseX = e.clientX / window.innerWidth;
+      const mouseY = e.clientY / window.innerHeight;
+      
+      starsContainer.style.transform = `translate(${mouseX * 50}px, ${mouseY * 50}px)`;
+    });
+
+    document.addEventListener('selectstart', (e) => {
+      e.preventDefault();
+    });
+  </script>
+</body>
+</html>
